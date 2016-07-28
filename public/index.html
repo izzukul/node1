@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<h1>Hello friend </h1>
+	<p>beep beep</p>
+	<hr>
+	<img src="images/abc.jpg" style="width:500px;height:60%;">
+	<form role="form">
+		<div class="form-group">
+			<label for="text">input</label>
+			<input type="text" class="form-control" id="input" value="input example">
+		</div>
+	</form>	
+		<button type="submit" class="btn btn-default" id="button1">Submit</button> 
+		<button type="submit" class="btn btn-default" id="button2">Get</button> 
+		<textarea rows="4" cols="20" id="textarea">abc content</textarea>
+	
+</body>
+</html>
+
+<script type="text/javascript">
+	$("#button1").click(function(e) {
+		e.preventDefault();
+    	var url = "/api/post"; // the script where you handle the form input.
+    	var getdata = document.getElementById('input').value;
+    	console.log(getdata);
+    	$.ajax({
+	    	type: "POST",
+	    	url: url,
+	        data: {input : String(getdata)}, // serializes the form's elements.
+	        success: function(data)
+	        {
+	           alert(data); // show response from the php script.
+	        },
+	        error: function( jqXhr, textStatus, errorThrown ){
+               console.log(errorThrown);
+            }
+	    });
+
+	    // avoid to execute the actual submit of the form.
+	 });
+	$("#button2").click(function(e){
+
+		var textarea = document.getElementById('textarea');	
+		$.ajax({
+			type: "GET",
+			url: "/api/get",
+           //data: $(this).serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+           		// $("#posts").html(data.body);
+				$('#textarea').val(data.value);
+           }
+       	});
+	});
+</script>
+
